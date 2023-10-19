@@ -70,10 +70,7 @@ public class Compras extends AppCompatActivity {
         textMoneyCount.setText(num.toString());
     }
 
-    public void sumar(View v) {
-        num = num.add(inc);
-        setContText();
-    }
+
 
     public void sumaTotal(View v) {
         // inc += num/100 and num=num%100

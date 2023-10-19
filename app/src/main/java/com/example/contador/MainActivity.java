@@ -3,6 +3,7 @@ package com.example.contador;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
 
+    MediaPlayer mediaPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
         // Cargo animaciones
         fade_in.setDuration(100);
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.background_music);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
+
+
         // Cargo el texto con la funcion que lo formatea e inicio el sumar auto.
         setContText();
         sumarAuto();
@@ -67,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
     public void sumar(View v) {
         num = num.add(inc);
         setContText();
-        moneda.startAnimation(fade_in);
     }
 
     public void sumarAuto() {
@@ -85,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setContText() {
-
-
         if (num.longValue() >= 1000000000) {
             numD = BigDecimal.valueOf(num.longValue() / 1000000000d);
             contador.setText(df.format(numD) + "B");
@@ -104,62 +108,14 @@ public class MainActivity extends AppCompatActivity {
         textVelocidadAutoClick.setText("Autoclick speed: " + tiempoAutoClick + "m" + "s");
     }
 
-    public void sumaTotal(View v) {
-        // inc += num/100 and num=num%100
-        inc = inc.add(num.divide(BigInteger.valueOf(100)));
-        num = num.remainder(BigInteger.valueOf(100));
-        contador.setText(num.toString());
-
-    }
-
-    public void sumaTotalAuto(View v) {
-        incAuto = incAuto.add(num.divide(BigInteger.valueOf(200)));
-        num = num.remainder(BigInteger.valueOf(200));
-        contador.setText(num.toString());
-
-    }
-
-    public void incrementarAutoSpeed(View v) {
-        if (num.longValue() >= 400) {
-            tiempoAutoClick = (int) (tiempoAutoClick / 1.5);
-            num = num.subtract(BigInteger.valueOf(400));
-        }
-    }
-
-    public void incrementarAutoSpeedTotal(View v) {
-        if (num.longValue() >= 400) {
-            int times = num.divide(BigInteger.valueOf(400)).intValue();
-            tiempoAutoClick = (int) (tiempoAutoClick / (1.5 * times));
-            num = num.remainder(BigInteger.valueOf(400));
-            contador.setText(num.toString());
-        }
-    }
-
-    public void incrementar(View v) {
-        if (num.longValue() >= 100) {
-            inc = inc.add(BigInteger.valueOf(1));
-            num = num.subtract(BigInteger.valueOf(100));
-            contador.setText(num.toString());
-        }
-    }
-
-    public void incrementarAuto(View v) {
-        if (num.longValue() >= 200) {
-            incAuto = incAuto.add(BigInteger.valueOf(1));
-            num = num.subtract(BigInteger.valueOf(200));
-            contador.setText(num.toString());
-        }
-    }
-
     public void reset(View v) {
         num = BigInteger.valueOf(0);
-        contador.setText(num.toString());
+        setContText();
     }
 
     public void irAPantallaInicio(View view) {
         Intent i = new Intent(this, PantallaInicio.class);
         startActivity(i);
-
     }
 
     public void irACompras(View view) {
@@ -169,5 +125,12 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("AUTOCLICK_VALUE", incAuto.toString());
         i.putExtra("AUTOCLICK_TIME", tiempoAutoClick);
         startActivity(i);
+        finish();
+    }
+
+    @Override
+    protected void onStop() {
+        mediaPlayer.release();
+        super.onStop();
     }
 }

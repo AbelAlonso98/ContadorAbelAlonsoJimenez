@@ -1,6 +1,7 @@
 package com.example.contador;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +20,11 @@ public class Options extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void cambiarTema(View v){
-        setTheme(R.style.Theme);
+    public void cambiarTema(View v) {
+        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        else
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     }
+
 }

@@ -80,13 +80,11 @@
 
     <ImageView
         android:id="@+id/mainActBackButton"
-        android:layout_width="42dp"
-        android:layout_height="35dp"
         android:layout_marginTop="48dp"
         android:onClick="irAPantallaInicio"
+        style="@style/backImage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/back" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
         android:id="@+id/btnCompras"

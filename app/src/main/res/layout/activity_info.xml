@@ -10,13 +10,12 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
         android:layout_marginTop="10dp"
+        style="@style/backImage"
         android:onClick="irAPantallaInicio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/back"
+
         android:contentDescription="@string/backButtonDescription" />
 
     <TextView
