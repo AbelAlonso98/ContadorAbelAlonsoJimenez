@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Contador</string>
+    <string name="InfoText">This was made by Abel Alonso while studying PMDM.\n\nThank you for using me.</string>
+    <string name="backButtonDescription">Button used to go back to the first app.</string>
+</resources>
