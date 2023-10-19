@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Compras">
+
+    <LinearLayout
+        android:id="@+id/dataBar"
+        style="@style/scrollLayout"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textValorClick"
+            style="@style/scrollLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="-"
+            android:textAlignment="center"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/textValorAutoClick"
+            style="@style/scrollLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="-"
+            android:textAlignment="center"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/textVelocidadAutoClick"
+            style="@style/scrollLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="-"
+            android:textAlignment="center"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/scrollLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataBar">
+
+        <TextView
+            android:id="@+id/txtMoney"
+            style="@style/scrollLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MONEY: " />
+
+        <TextView
+            android:id="@+id/txtMoneyCount"
+            style="@style/scrollLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="TEST"
+            android:textAlignment="center" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/svMejoras"
+        style="@style/scrollLayout"
+        android:layout_width="match_parent"
+        android:layout_height="403dp"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            style="@style/scrollLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Mejora pendiente: un booster temporal -->
+
+            <!-- Mejora 1 (Billete)-->
+            <LinearLayout
+                android:id="@+id/conjuntoMejora"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.893">
+
+                <ImageView
+                    android:id="@+id/imagenMejora"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:src="@drawable/dollar"
+                    android:textAlignment="center" />
+
+                <LinearLayout
+                    android:id="@+id/sideConjuntoMejora"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tituloMejora"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Valor del Click"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/descripcionMejora"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Aumenta el valor de los clicks."
+                        android:textAlignment="center" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/botonMejora"
+                            style="@style/buttonTheme"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:onClick="incrementar"
+                            android:text="100$" />
+
+                        <Button
+                            android:id="@+id/botonSumarTotal"
+                            style="@style/maxUpgradeButtonTheme"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:onClick="sumaTotal"
+                            android:text="100$ x1" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Mejora 2 (Autoclick)-->
+            <LinearLayout
+                android:id="@+id/conjuntoMejora2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.893">
+
+                <ImageView
+                    android:id="@+id/imagenMejora2"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:src="@drawable/dollar"
+                    android:textAlignment="center" />
+
+                <LinearLayout
+                    android:id="@+id/sideConjuntoMejora2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tituloMejora2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Auto-Click"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/descripcionMejora2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Aumenta el click por segundo."
+                        android:textAlignment="center" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/botonSumarAuto"
+                            style="@style/buttonTheme"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:onClick="incrementarAuto"
+                            android:text="200$" />
+
+                        <Button
+                            android:id="@+id/botonSumarAutoTotal"
+                            style="@style/maxUpgradeButtonTheme"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:onClick="sumaTotalAuto"
+                            android:text="200$ x1" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Mejora 3 (Autoclick speed) -->
+            <LinearLayout
+                android:id="@+id/conjuntoMejora3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.893">
+
+                <ImageView
+                    android:id="@+id/imagenMejora3"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:src="@drawable/dollar"
+                    android:textAlignment="center" />
+
+                <LinearLayout
+                    android:id="@+id/sideConjuntoMejora3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tituloMejora3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Auto-Click Speed"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/descripcionMejora3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Reduce el tiempo del click automatico."
+                        android:textAlignment="center" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/botonSumarAutoSpeed"
+                            style="@style/buttonTheme"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:onClick="incrementarAutoSpeed"
+                            android:text="400$" />
+
+                        <Button
+                            android:id="@+id/botonSumarAutoSpeedTotal"
+                            style="@style/maxUpgradeButtonTheme"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:onClick="incrementarAutoSpeedTotal"
+                            android:text="400$ x1" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnVolverJugar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VOLVER A LA  PARTIDA"
+        style="@style/buttonTheme"
+        android:onClick="volverAJugar"
+        app:layout_constraintBottom_toTopOf="@+id/svMejoras"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
