@@ -1,12 +1,11 @@
 package com.example.contador;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,9 +17,12 @@ public class Info extends ListActivity implements AdapterView.OnItemClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
         List<Centro> centros = Arrays.asList(
-                new Centro("Centro 1", "Direccion 1", R.drawable.back_orange),
-                new Centro("Centro 2", "Direccion 2", R.drawable.back_orange),
-                new Centro("Centro 3", "Direccion 3", R.drawable.back_orange)
+                new Centro("Abel Alonso Jiménez", "Producción de código", R.drawable.img_abel),
+                new Centro("Nuria Valdés Cuesta", "Producción gráfica", R.drawable.img_nuria),
+                new Centro("Alfonso García Martín", "Direccion ejecutiva", R.drawable.img_fonsi),
+                new Centro("Ignacio Fernández Prieto", "Coproducción de código", R.drawable.img_nacho),
+                new Centro("Pablo Eguilaz Pérez ", "Tester principal", R.drawable.img_pablo),
+                new Centro("Carlos Manso González", "Team leader", R.drawable.img_carlos)
         );
         CentrosAdapter adapter = new CentrosAdapter(this, R.layout.item, centros);
         setListAdapter(adapter);
@@ -30,6 +32,7 @@ public class Info extends ListActivity implements AdapterView.OnItemClickListene
     public void irAPantallaInicio(View view) {
         Intent i = new Intent(this, PantallaInicio.class);
         startActivity(i);
+        finish();
     }
 
     @Override

@@ -25,9 +25,9 @@ public class CentrosAdapter extends ArrayAdapter<Centro> {
         Centro c = getItem(position);
         if(convertView  == null)
             convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.item, parent, false);
-        ((ImageView) convertView.findViewById(R.id.imagenDeMierda)).setImageResource(c.getImagen());
-        ((TextView) convertView.findViewById(R.id.textoDeMierda)).setText(c.getNombre());
-        ((TextView) convertView.findViewById(R.id.textoDeMierda2)).setText(c.getDireccion());
+        ((ImageView) convertView.findViewById(R.id.imgEquipo)).setImageResource(c.getImagen());
+        ((TextView) convertView.findViewById(R.id.txtNombreEquipo)).setText(c.getNombre());
+        ((TextView) convertView.findViewById(R.id.txtCargoEquipo)).setText(c.getDireccion());
         return convertView;
     }
 }

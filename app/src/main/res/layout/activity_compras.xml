@@ -100,7 +100,7 @@
                     android:id="@+id/imagenMejora"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    android:src="@drawable/dollar"
+                    android:src="@drawable/img_dollar"
                     android:textAlignment="center" />
 
                 <LinearLayout
@@ -167,7 +167,7 @@
                     android:id="@+id/imagenMejora2"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    android:src="@drawable/dollar"
+                    android:src="@drawable/img_dollar"
                     android:textAlignment="center" />
 
                 <LinearLayout
@@ -234,7 +234,7 @@
                     android:id="@+id/imagenMejora3"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    android:src="@drawable/dollar"
+                    android:src="@drawable/img_dollar"
                     android:textAlignment="center" />
 
                 <LinearLayout

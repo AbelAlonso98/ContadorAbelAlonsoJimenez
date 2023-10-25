@@ -56,6 +56,7 @@ public class Compras extends AppCompatActivity {
         i.putExtra("AUTOCLICK_VALUE", incAuto.toString());
         i.putExtra("AUTOCLICK_TIME", tiempoAutoClick);
         startActivity(i);
+        finish();
     }
 
     public void setContText() {

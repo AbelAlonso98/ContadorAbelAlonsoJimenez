@@ -1,16 +1,14 @@
 package com.example.contador;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -19,7 +17,6 @@ import java.text.DecimalFormat;
 public class MainActivity extends AppCompatActivity {
 
     TextView contador;
-    ImageView moneda;
 
     TextView textValorClick;
     TextView textValorAutoClick;
@@ -34,25 +31,26 @@ public class MainActivity extends AppCompatActivity {
 
     int tiempoAutoClick = 1000;
 
+
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
 
     MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            num = new BigInteger(extras.getString("MONEY_COUNT"));
-            inc = new BigInteger(extras.getString("CLICK_VALUE"));
-            incAuto = new BigInteger(extras.getString("AUTOCLICK_VALUE"));
+            num = new BigInteger(extras.getString("MONEY_COUNT","0"));
+            inc = new BigInteger(extras.getString("CLICK_VALUE","0"));
+            incAuto = new BigInteger(extras.getString("AUTOCLICK_VALUE","0"));
             tiempoAutoClick = extras.getInt("AUTOCLICK_TIME");
         }
 
         //  Cargo todos los componentes que voy a usar.
         contador = (TextView) findViewById(R.id.textocontador);
-        moneda = (ImageView) findViewById(R.id.moneda);
 
         textValorClick = (TextView) findViewById(R.id.textValorClick);
         textValorAutoClick = (TextView) findViewById(R.id.textValorAutoClick);
@@ -64,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(this, R.raw.background_music);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
+
 
 
         // Cargo el texto con la funcion que lo formatea e inicio el sumar auto.
@@ -116,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
     public void irAPantallaInicio(View view) {
         Intent i = new Intent(this, PantallaInicio.class);
         startActivity(i);
+        finish();
     }
 
     public void irACompras(View view) {
@@ -130,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        mediaPlayer.release();
         super.onStop();
     }
 }

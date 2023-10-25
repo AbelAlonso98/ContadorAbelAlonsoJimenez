@@ -70,7 +70,7 @@
         android:layout_height="100dp"
         android:contentDescription="Coin for click increase"
         android:onClick="sumar"
-        android:src="@drawable/coin"
+        android:src="@drawable/img_coin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
