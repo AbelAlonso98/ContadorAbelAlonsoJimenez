@@ -70,8 +70,6 @@ public class Compras extends AppCompatActivity {
         textMoneyCount.setText(num.toString());
     }
 
-
-
     public void sumaTotal(View v) {
         // inc += num/100 and num=num%100
         inc = inc.add(num.divide(BigInteger.valueOf(100)));
@@ -83,9 +81,7 @@ public class Compras extends AppCompatActivity {
         incAuto = incAuto.add(num.divide(BigInteger.valueOf(200)));
         num = num.remainder(BigInteger.valueOf(200));
         setContText();
-
     }
-
     public void incrementarAutoSpeed(View v) {
         if (num.longValue() >= 400) {
             tiempoAutoClick = (int) (tiempoAutoClick / 1.5);

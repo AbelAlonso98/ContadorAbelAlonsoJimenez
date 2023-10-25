@@ -49,32 +49,20 @@
             android:textSize="15sp" />
     </LinearLayout>
 
-    <LinearLayout
-        style="@style/scrollLayout"
+
+    <TextView
+        android:id="@+id/txtMoneyCount"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:text="---"
+        android:textAlignment="center"
+        android:textSize="100sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnVolverJugar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dataBar">
+        app:layout_constraintTop_toBottomOf="@+id/dataBar" />
 
-        <TextView
-            android:id="@+id/txtMoney"
-            style="@style/scrollLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="MONEY: " />
-
-        <TextView
-            android:id="@+id/txtMoneyCount"
-            style="@style/scrollLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:gravity="center"
-            android:text="TEST"
-            android:textAlignment="center" />
-
-    </LinearLayout>
 
     <ScrollView
         android:id="@+id/svMejoras"

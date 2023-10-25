@@ -91,13 +91,14 @@
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:onClick="irACompras"
+        style="@style/shopImage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.975"
-        app:srcCompat="@drawable/shop" />
+         />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

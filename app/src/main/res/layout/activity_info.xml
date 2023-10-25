@@ -7,28 +7,28 @@
     style="@style/Theme"
     tools:context=".Info">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00ff00"
+            android:layout_weight="1"
+            android:drawSelectorOnTop="false"/>
+        <TextView android:id="@android:id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FF0000"
+            android:text="Lista de centros"/>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_marginTop="10dp"
-        style="@style/backImage"
-        android:onClick="irAPantallaInicio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
 
-        android:contentDescription="@string/backButtonDescription" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/InfoText"
-        android:textAlignment="center"
-        android:textSize="40sp"
-        android:padding="10dp"
-        style="@style/Theme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
