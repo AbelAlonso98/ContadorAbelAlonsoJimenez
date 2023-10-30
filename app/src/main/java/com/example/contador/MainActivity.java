@@ -1,5 +1,6 @@
 package com.example.contador;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -11,29 +12,23 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.DecimalFormat;
+import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView contador;
-
     TextView textValorClick;
     TextView textValorAutoClick;
     TextView textVelocidadAutoClick;
     ScaleAnimation fade_in = new ScaleAnimation(0.7f, 1.2f, 0.7f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 
-
-    BigInteger num = new BigInteger("500");
-    BigDecimal numD = new BigDecimal("0");
-    BigInteger inc = new BigInteger("1");
-    BigInteger incAuto = new BigInteger("1");
+    BigDecimal num = new BigDecimal("0");
+    BigDecimal inc = new BigDecimal("1");
+    BigDecimal incAuto = new BigDecimal("1");
 
     int tiempoAutoClick = 1000;
-
-
-    private static final DecimalFormat df = new DecimalFormat("0.00");
-
 
     MediaPlayer mediaPlayer;
 
@@ -42,28 +37,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Bundle extras = getIntent().getExtras();
+
         if (extras != null) {
-            num = new BigInteger(extras.getString("MONEY_COUNT","0"));
-            inc = new BigInteger(extras.getString("CLICK_VALUE","0"));
-            incAuto = new BigInteger(extras.getString("AUTOCLICK_VALUE","0"));
+            num = new BigDecimal(extras.getString("MONEY_COUNT", "0"));
+            inc = new BigDecimal(extras.getString("CLICK_VALUE", "0"));
+            incAuto = new BigDecimal(extras.getString("AUTOCLICK_VALUE", "0"));
             tiempoAutoClick = extras.getInt("AUTOCLICK_TIME");
         }
 
         //  Cargo todos los componentes que voy a usar.
-        contador = (TextView) findViewById(R.id.textocontador);
+        contador = findViewById(R.id.textocontador);
+        textValorClick = findViewById(R.id.textValorClick);
+        textValorAutoClick = findViewById(R.id.textValorAutoClick);
+        textVelocidadAutoClick = findViewById(R.id.textVelocidadAutoClick);
 
-        textValorClick = (TextView) findViewById(R.id.textValorClick);
-        textValorAutoClick = (TextView) findViewById(R.id.textValorAutoClick);
-        textVelocidadAutoClick = (TextView) findViewById(R.id.textVelocidadAutoClick);
-
-        // Cargo animaciones
+        // Cargo animaciones y musica
         fade_in.setDuration(100);
-
         mediaPlayer = MediaPlayer.create(this, R.raw.background_music);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
-
-
 
         // Cargo el texto con la funcion que lo formatea e inicio el sumar auto.
         setContText();
@@ -89,26 +81,72 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    public void setContText() {
-        if (num.longValue() >= 1000000000) {
-            numD = BigDecimal.valueOf(num.longValue() / 1000000000d);
-            contador.setText(df.format(numD) + "B");
-        } else if (num.longValue() >= 1000000) {
-            numD = BigDecimal.valueOf(num.longValue() / 1000000d);
-            contador.setText(df.format(numD) + "M");
-        } else if (num.longValue() >= 1000) {
-            numD = BigDecimal.valueOf(num.longValue() / 1000d);
-            contador.setText(df.format(numD) + "K");
-        } else
-            contador.setText(num.toString());
 
+    public void setContText() {
+
+        // Esta opcion con un mapa, la veo más bonita y estable.
+        HashMap<String, BigDecimal> VALORES = new LinkedHashMap<>();
+        VALORES.put("K", new BigDecimal("1000"));
+        VALORES.put("M", new BigDecimal("1000000"));
+        VALORES.put("B", new BigDecimal("1000000000"));
+        VALORES.put("T", new BigDecimal("1000000000000"));
+        VALORES.put("C", new BigDecimal("1000000000000000"));
+        VALORES.put("Q", new BigDecimal("1000000000000000000"));
+        VALORES.put("S", new BigDecimal("1000000000000000000000"));
+        VALORES.put("H", new BigDecimal("10000000000000000000000000"));
+        VALORES.put("O", new BigDecimal("10000000000000000000000000000"));
+        VALORES.put("N", new BigDecimal("10000000000000000000000000000000"));
+        VALORES.put("D", new BigDecimal("10000000000000000000000000000000000"));
+        VALORES.put("UD", new BigDecimal("10000000000000000000000000000000000000"));
+        VALORES.put("DD", new BigDecimal("1000000000000000000000000000000000000000"));
+        VALORES.put("TD", new BigDecimal("1000000000000000000000000000000000000000000"));
+        VALORES.put("CD", new BigDecimal("1000000000000000000000000000000000000000000000"));
+        VALORES.put("QD", new BigDecimal("1000000000000000000000000000000000000000000000000"));
+        VALORES.put("SD", new BigDecimal("1000000000000000000000000000000000000000000000000000"));
+        VALORES.put("HD", new BigDecimal("1000000000000000000000000000000000000000000000000000000"));
+        VALORES.put("OD", new BigDecimal("1000000000000000000000000000000000000000000000000000000000"));
+        VALORES.put("ND", new BigDecimal("1000000000000000000000000000000000000000000000000000000000000"));
+        VALORES.put("V", new BigDecimal("10000000000000000000000000000000000000000000000000000000000000000"));
+
+        if (num.compareTo(VALORES.get("K")) < 0)
+            contador.setText(num.toString());
+        else {
+            for (String s : VALORES.keySet()) {
+                if (num.compareTo(VALORES.get(s)) >= 0)
+                    contador.setText(num.divide(VALORES.get(s)).setScale(2, RoundingMode.HALF_EVEN).toString() + s);
+            }
+        }
+
+        // Esta opcion con dos arrays, el inconveniente es que ambos han de tener las mismas dimensiones.
+//        for(String s: VALORES.keySet()){
+//            if(num.compareTo(VALORES.get(s)) >= 0)
+//                contador.setText(num.divide(VALORES.get(s)).setScale(2, RoundingMode.HALF_EVEN).toString() + s);
+//
+//        }
+//        String[] SIGLAS = {"K", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q", "D"};
+//        BigDecimal[] NUMBERS = {
+//                new BigDecimal("1000000"),
+//                new BigDecimal("1000000000"),
+//                new BigDecimal("1000000000000"),
+//                new BigDecimal("1000000000000000"),
+//                new BigDecimal("1000000000000000000"),
+//                new BigDecimal("1000000000000000000000"),
+//                new BigDecimal("1000000000000000000000000"),
+//                new BigDecimal("1000000000000000000000000000"),
+//                new BigDecimal("1000000000000000000000000000000"),
+//                new BigDecimal("1000000000000000000000000000000000")};
+//        for (int i = 0; i < NUMBERS.length; i++) {
+//            BigDecimal n = NUMBERS[i];
+//            if (num.compareTo(n) >= 0)
+//                contador.setText(num.divide(n).setScale(2, RoundingMode.HALF_EVEN).toString() + SIGLAS[i]);
+//        }
         textValorClick.setText("Click: " + inc.toString());
         textValorAutoClick.setText("Autoclick: " + incAuto.toString());
         textVelocidadAutoClick.setText("Autoclick speed: " + tiempoAutoClick + "m" + "s");
     }
 
     public void reset(View v) {
-        num = BigInteger.valueOf(0);
+        num = BigDecimal.valueOf(0);
         setContText();
     }
 

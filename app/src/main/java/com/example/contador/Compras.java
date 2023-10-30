@@ -8,14 +8,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Compras extends AppCompatActivity {
 
-    BigInteger num;
-    BigInteger inc = new BigInteger("1");
-    BigInteger incAuto = new BigInteger("1");
-    int tiempoAutoClick = 1000;
+    BigDecimal num;
+    BigDecimal inc;
+    BigDecimal incAuto;
+    int tiempoAutoClick;
 
     Button botonSumaTotal;
     Button botonSumarAutoTotal;
@@ -32,9 +36,9 @@ public class Compras extends AppCompatActivity {
         setContentView(R.layout.activity_compras);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            num = new BigInteger(extras.getString("MONEY_COUNT"));
-            inc = new BigInteger(extras.getString("CLICK_VALUE"));
-            incAuto = new BigInteger(extras.getString("AUTOCLICK_VALUE"));
+            num = new BigDecimal(extras.getString("MONEY_COUNT"));
+            inc = new BigDecimal(extras.getString("CLICK_VALUE"));
+            incAuto = new BigDecimal(extras.getString("AUTOCLICK_VALUE"));
             tiempoAutoClick = extras.getInt("AUTOCLICK_TIME");
         }
 
@@ -60,58 +64,91 @@ public class Compras extends AppCompatActivity {
     }
 
     public void setContText() {
-        botonSumaTotal.setText("100$ x" + num.divide(BigInteger.valueOf(100)));
-        botonSumarAutoTotal.setText("200$ x" + num.divide(BigInteger.valueOf(200)));
-        botonSumarAutoSpeedTotal.setText("400$ x" + num.divide(BigInteger.valueOf(400)));
+        // El texto de los botones de la derecha es dinamico, se cargan aquí
+        botonSumaTotal.setText("100$ x" + num.divide(BigDecimal.valueOf(100)));
+        botonSumarAutoTotal.setText("200$ x" + num.divide(BigDecimal.valueOf(200)));
+        botonSumarAutoSpeedTotal.setText("400$ x" + num.divide(BigDecimal.valueOf(400)));
 
+        // Cargo los datos de la barra superior
         textValorClick.setText("Click: " + inc.toString());
         textValorAutoClick.setText("Autoclick: " + incAuto.toString());
         textVelocidadAutoClick.setText("Autoclick speed: " + tiempoAutoClick + "m" + "s");
 
-        textMoneyCount.setText(num.toString());
+        // Formateo el contador.
+        HashMap<String, BigDecimal> VALORES = new LinkedHashMap<>();
+        VALORES.put("K", new BigDecimal("1000"));
+        VALORES.put("M", new BigDecimal("1000000"));
+        VALORES.put("B", new BigDecimal("1000000000"));
+        VALORES.put("T", new BigDecimal("1000000000000"));
+        VALORES.put("C", new BigDecimal("1000000000000000"));
+        VALORES.put("Q", new BigDecimal("1000000000000000000"));
+        VALORES.put("S", new BigDecimal("1000000000000000000000"));
+        VALORES.put("H", new BigDecimal("10000000000000000000000000"));
+        VALORES.put("O", new BigDecimal("10000000000000000000000000000"));
+        VALORES.put("N", new BigDecimal("10000000000000000000000000000000"));
+        VALORES.put("D", new BigDecimal("10000000000000000000000000000000000"));
+        VALORES.put("UD", new BigDecimal("10000000000000000000000000000000000000"));
+        VALORES.put("DD", new BigDecimal("1000000000000000000000000000000000000000"));
+        VALORES.put("TD", new BigDecimal("1000000000000000000000000000000000000000000"));
+        VALORES.put("CD", new BigDecimal("1000000000000000000000000000000000000000000000"));
+        VALORES.put("QD", new BigDecimal("1000000000000000000000000000000000000000000000000"));
+        VALORES.put("SD", new BigDecimal("1000000000000000000000000000000000000000000000000000"));
+        VALORES.put("HD", new BigDecimal("1000000000000000000000000000000000000000000000000000000"));
+        VALORES.put("OD", new BigDecimal("1000000000000000000000000000000000000000000000000000000000"));
+        VALORES.put("ND", new BigDecimal("1000000000000000000000000000000000000000000000000000000000000"));
+        VALORES.put("V", new BigDecimal("10000000000000000000000000000000000000000000000000000000000000000"));
+
+        if (num.compareTo(VALORES.get("K")) < 0)
+            textMoneyCount.setText(num.toString());
+        else {
+            for (String s : VALORES.keySet()) {
+                if (num.compareTo(VALORES.get(s)) >= 0)
+                    textMoneyCount.setText(num.divide(VALORES.get(s)).setScale(2, RoundingMode.HALF_EVEN).toString() + s);
+            }
+        }
     }
 
     public void sumaTotal(View v) {
         // inc += num/100 and num=num%100
-        inc = inc.add(num.divide(BigInteger.valueOf(100)));
-        num = num.remainder(BigInteger.valueOf(100));
+        inc = inc.add(num.divide(BigDecimal.valueOf(100)));
+        num = num.remainder(BigDecimal.valueOf(100));
         setContText();
     }
 
     public void sumaTotalAuto(View v) {
-        incAuto = incAuto.add(num.divide(BigInteger.valueOf(200)));
-        num = num.remainder(BigInteger.valueOf(200));
+        incAuto = incAuto.add(num.divide(BigDecimal.valueOf(200)));
+        num = num.remainder(BigDecimal.valueOf(200));
         setContText();
     }
     public void incrementarAutoSpeed(View v) {
         if (num.longValue() >= 400) {
             tiempoAutoClick = (int) (tiempoAutoClick / 1.5);
-            num = num.subtract(BigInteger.valueOf(400));
+            num = num.subtract(BigDecimal.valueOf(400));
             setContText();
         }
     }
 
     public void incrementarAutoSpeedTotal(View v) {
         if (num.longValue() >= 400) {
-            int times = num.divide(BigInteger.valueOf(400)).intValue();
+            int times = num.divide(BigDecimal.valueOf(400)).intValue();
             tiempoAutoClick = (int) (tiempoAutoClick / (1.5 * times));
-            num = num.remainder(BigInteger.valueOf(400));
+            num = num.remainder(BigDecimal.valueOf(400));
             setContText();
         }
     }
 
     public void incrementar(View v) {
         if (num.longValue() >= 100) {
-            inc = inc.add(BigInteger.valueOf(1));
-            num = num.subtract(BigInteger.valueOf(100));
+            inc = inc.add(BigDecimal.valueOf(1));
+            num = num.subtract(BigDecimal.valueOf(100));
             setContText();
         }
     }
 
     public void incrementarAuto(View v) {
         if (num.longValue() >= 200) {
-            incAuto = incAuto.add(BigInteger.valueOf(1));
-            num = num.subtract(BigInteger.valueOf(200));
+            incAuto = incAuto.add(BigDecimal.valueOf(1));
+            num = num.subtract(BigDecimal.valueOf(200));
             setContText();
         }
     }
