@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Theme"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Info">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -21,18 +21,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-
         <ListView
-            android:id="@android:id/list"
+
+            android:id="@+id/dataList"
             style="@style/scrollLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="350dp"
             android:drawSelectorOnTop="false" />
-
-
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:onClick="irAPantallaInicio"
+        style="@style/backImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

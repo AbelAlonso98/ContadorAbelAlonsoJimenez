@@ -116,7 +116,7 @@ public class Compras extends AppCompatActivity {
     }
 
     public void sumaTotalAuto(View v) {
-        incAuto = incAuto.add(num.divide(BigDecimal.valueOf(200)));
+        incAuto = incAuto.add(num.divide(BigDecimal.valueOf(200))).setScale(0);
         num = num.remainder(BigDecimal.valueOf(200));
         setContText();
     }
@@ -147,7 +147,7 @@ public class Compras extends AppCompatActivity {
 
     public void incrementarAuto(View v) {
         if (num.longValue() >= 200) {
-            incAuto = incAuto.add(BigDecimal.valueOf(1));
+            incAuto = incAuto.add(BigDecimal.valueOf(1)).setScale(0, BigDecimal.ROUND_DOWN);
             num = num.subtract(BigDecimal.valueOf(200));
             setContText();
         }

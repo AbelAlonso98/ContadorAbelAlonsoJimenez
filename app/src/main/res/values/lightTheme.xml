@@ -37,7 +37,6 @@
         <item name="srcCompat">@drawable/img_back_orange</item>
         <item name="android:layout_width">35dp</item>
         <item name="android:layout_height">35dp</item>
-        <item name="android:background">@color/white</item>
     </style>
 
     <style name="shopImage">

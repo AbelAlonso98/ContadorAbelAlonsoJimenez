@@ -1,6 +1,7 @@
 package com.example.contador;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.math.BigDecimal;
@@ -24,13 +26,15 @@ public class MainActivity extends AppCompatActivity {
     TextView textVelocidadAutoClick;
     ScaleAnimation fade_in = new ScaleAnimation(0.7f, 1.2f, 0.7f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 
-    BigDecimal num = new BigDecimal("0");
+    BigDecimal num = new BigDecimal("567");
     BigDecimal inc = new BigDecimal("1");
     BigDecimal incAuto = new BigDecimal("1");
 
     int tiempoAutoClick = 1000;
 
     MediaPlayer mediaPlayer;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Esta opcion con un mapa, la veo más bonita y estable.
         HashMap<String, BigDecimal> VALORES = new LinkedHashMap<>();
+
         VALORES.put("K", new BigDecimal("1000"));
         VALORES.put("M", new BigDecimal("1000000"));
         VALORES.put("B", new BigDecimal("1000000000"));
@@ -146,11 +151,55 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void reset(View v) {
-        num = BigDecimal.valueOf(0);
-        setContText();
+
+        AlertDialog.Builder constructor = new AlertDialog.Builder(this);
+        constructor.setCancelable(true);
+        constructor.setTitle("Reset");
+        constructor.setMessage("¿Seguro que quieres resetear el progreso?");
+        constructor.setPositiveButton("RESET", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                num = new BigDecimal("0");
+                setContText();
+            }
+        });
+        constructor.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog dialog = constructor.create();
+        dialog.show();
+
     }
 
     public void irAPantallaInicio(View view) {
+
+        AlertDialog.Builder constructor = new AlertDialog.Builder(this);
+        constructor.setCancelable(true);
+        constructor.setTitle("Salir");
+        constructor.setMessage("Si sales perderás el progreso, ¿quieres salir?");
+        constructor.setPositiveButton("SALIR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                salir();
+            }
+        });
+        constructor.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog dialog = constructor.create();
+        dialog.show();
+
+    }
+
+    public void salir(){
         Intent i = new Intent(this, PantallaInicio.class);
         startActivity(i);
         finish();

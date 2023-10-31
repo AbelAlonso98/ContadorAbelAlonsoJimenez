@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
+import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Info extends ListActivity implements AdapterView.OnItemClickListener {
+public class Info extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +27,11 @@ public class Info extends ListActivity implements AdapterView.OnItemClickListene
                 new Centro("Carlos Manso González", "Team leader", R.drawable.img_carlos)
         );
         CentrosAdapter adapter = new CentrosAdapter(this, R.layout.item, centros);
-        setListAdapter(adapter);
-        getListView().setOnItemClickListener(this);
+        ListView dataList = findViewById(R.id.dataList);
+        dataList.setAdapter(adapter);
+        dataList.setOnItemClickListener(this);
+//        setListAdapter(adapter);
+//        getListView().setOnItemClickListener(this);
     }
 
     public void irAPantallaInicio(View view) {
