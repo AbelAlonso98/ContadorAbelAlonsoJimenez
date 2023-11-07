@@ -65,9 +65,9 @@ public class Compras extends AppCompatActivity {
 
     public void setContText() {
         // El texto de los botones de la derecha es dinamico, se cargan aquí
-        botonSumaTotal.setText("100$ x" + num.divide(BigDecimal.valueOf(100)));
-        botonSumarAutoTotal.setText("200$ x" + num.divide(BigDecimal.valueOf(200)));
-        botonSumarAutoSpeedTotal.setText("400$ x" + num.divide(BigDecimal.valueOf(400)));
+        botonSumaTotal.setText("100$ x" + num.divide(BigDecimal.valueOf(100), BigDecimal.ROUND_DOWN));
+        botonSumarAutoTotal.setText("200$ x" + num.divide(BigDecimal.valueOf(200), BigDecimal.ROUND_DOWN));
+        botonSumarAutoSpeedTotal.setText("400$ x" + num.divide(BigDecimal.valueOf(400), BigDecimal.ROUND_DOWN));
 
         // Cargo los datos de la barra superior
         textValorClick.setText("Click: " + inc.toString());
@@ -110,16 +110,17 @@ public class Compras extends AppCompatActivity {
 
     public void sumaTotal(View v) {
         // inc += num/100 and num=num%100
-        inc = inc.add(num.divide(BigDecimal.valueOf(100)));
+        inc = inc.add(num.divide(BigDecimal.valueOf(100), BigDecimal.ROUND_DOWN));
         num = num.remainder(BigDecimal.valueOf(100));
         setContText();
     }
 
     public void sumaTotalAuto(View v) {
-        incAuto = incAuto.add(num.divide(BigDecimal.valueOf(200))).setScale(0);
+        incAuto = incAuto.add(num.divide(BigDecimal.valueOf(200), BigDecimal.ROUND_HALF_DOWN));
         num = num.remainder(BigDecimal.valueOf(200));
         setContText();
     }
+
     public void incrementarAutoSpeed(View v) {
         if (num.longValue() >= 400) {
             tiempoAutoClick = (int) (tiempoAutoClick / 1.5);

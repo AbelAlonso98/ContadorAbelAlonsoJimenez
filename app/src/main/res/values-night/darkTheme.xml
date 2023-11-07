@@ -33,6 +33,19 @@
         <item name="android:layout_height">35dp</item>
     </style>
 
+    <style name="upgradeClick">
+        <item name="srcCompat">@drawable/img_upgrade_click_pink</item>
+    </style>
+
+    <style name="upgradeAutoClick">
+        <item name="srcCompat">@drawable/img_upgrade_autoclick_pink</item>
+    </style>
+
+    <style name="upgradeSpeed">
+        <item name="srcCompat">@drawable/img_upgrade_speed_pink</item>
+    </style>
+
+
     <style name="shopImage">
         <item name="srcCompat">@drawable/img_shop_pink</item>
         <item name="android:layout_width">35dp</item>

@@ -97,10 +97,10 @@
                 app:layout_constraintVertical_bias="0.893">
 
                 <ImageView
-                    android:id="@+id/imagenMejora"
+                    android:id="@+id/img_upgrade_autoclick_orange"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    android:src="@drawable/img_dollar"
+                    style="@style/upgradeClick"
                     android:textAlignment="center" />
 
                 <LinearLayout
@@ -167,7 +167,7 @@
                     android:id="@+id/imagenMejora2"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    android:src="@drawable/img_dollar"
+                    style="@style/upgradeAutoClick"
                     android:textAlignment="center" />
 
                 <LinearLayout
@@ -234,7 +234,7 @@
                     android:id="@+id/imagenMejora3"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    android:src="@drawable/img_dollar"
+                    style="@style/upgradeSpeed"
                     android:textAlignment="center" />
 
                 <LinearLayout
@@ -242,6 +242,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+
 
                     <TextView
                         android:id="@+id/tituloMejora3"
