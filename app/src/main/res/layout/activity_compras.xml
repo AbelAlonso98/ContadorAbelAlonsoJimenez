@@ -50,21 +50,7 @@
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/txtMoneyCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="---"
-        android:textAlignment="center"
-        android:textSize="90sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnVolverJugar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dataBar" />
-
-
-    <ScrollView
+        <ScrollView
         android:id="@+id/svMejoras"
         style="@style/scrollLayout"
         android:layout_width="match_parent"
@@ -97,7 +83,7 @@
                 app:layout_constraintVertical_bias="0.893">
 
                 <ImageView
-                    android:id="@+id/img_upgrade_autoclick_orange"
+                    android:id="@+id/img_upgrade"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     style="@style/upgradeClick"
@@ -135,16 +121,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
-                            android:onClick="incrementar"
+                            android:onClick="mejorarClick"
                             android:text="100$" />
 
                         <Button
-                            android:id="@+id/botonSumarTotal"
+                            android:id="@+id/botonMejoraTotal"
                             style="@style/maxUpgradeButtonTheme"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:onClick="sumaTotal"
+                            android:onClick="mejorarClickTotal"
                             android:text="100$ x1" />
                     </LinearLayout>
                 </LinearLayout>
@@ -202,7 +188,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
-                            android:onClick="incrementarAuto"
+                            android:onClick="mejorarAutoClick"
                             android:text="200$" />
 
                         <Button
@@ -211,7 +197,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:onClick="sumaTotalAuto"
+                            android:onClick="mejorarAutoClickTotal"
                             android:text="200$ x1" />
                     </LinearLayout>
                 </LinearLayout>
@@ -270,7 +256,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
-                            android:onClick="incrementarAutoSpeed"
+                            android:onClick="mejorarAutoClickSpeed"
                             android:text="400$" />
 
                         <Button
@@ -279,7 +265,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:onClick="incrementarAutoSpeedTotal"
+                            android:onClick="mejorarAutoClickSpeedTotal"
                             android:text="400$ x1" />
                     </LinearLayout>
                 </LinearLayout>
@@ -288,15 +274,32 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/btnVolverJugar"
+
+    <TextView
+        android:id="@+id/txtMoneyCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="VOLVER A LA  PARTIDA"
+        android:gravity="center"
+        android:text="---"
+        android:textAlignment="center"
+        android:textSize="90sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnVolverJugar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataBar"
+        app:layout_constraintVertical_bias="0.261" />
+
+    <Button
+        android:id="@+id/btnVolverJugar"
         style="@style/buttonTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="92dp"
         android:onClick="volverAJugar"
+        android:text="VOLVER A LA  PARTIDA"
         app:layout_constraintBottom_toTopOf="@+id/svMejoras"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

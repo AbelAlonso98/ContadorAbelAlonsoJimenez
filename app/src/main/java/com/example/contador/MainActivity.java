@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -24,16 +25,26 @@ public class MainActivity extends AppCompatActivity {
     TextView textValorClick;
     TextView textValorAutoClick;
     TextView textVelocidadAutoClick;
+    ImageView moneda;
     ScaleAnimation fade_in = new ScaleAnimation(0.7f, 1.2f, 0.7f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 
-    BigDecimal num = new BigDecimal("567");
+    BigDecimal num = new BigDecimal("51100");
     BigDecimal inc = new BigDecimal("1");
     BigDecimal incAuto = new BigDecimal("1");
+
+    BigDecimal precioUpgradeClick = new BigDecimal("100");
+    BigDecimal precioUpgradeAutoClick = new BigDecimal("200");
+    BigDecimal precioUpgradeSpeed = new BigDecimal("400");
+
+    int nivelUpgradeClick = 1;
+    int nivelUpgradeAutoClick = 1;
+    int nivelUpgradeSpeed = 1;
+
+
 
     int tiempoAutoClick = 1000;
 
     MediaPlayer mediaPlayer;
-
 
 
     @Override
@@ -47,6 +58,12 @@ public class MainActivity extends AppCompatActivity {
             inc = new BigDecimal(extras.getString("CLICK_VALUE", "0"));
             incAuto = new BigDecimal(extras.getString("AUTOCLICK_VALUE", "0"));
             tiempoAutoClick = extras.getInt("AUTOCLICK_TIME");
+            precioUpgradeClick = new BigDecimal(extras.getString("UPGRADE_PRECIO_CLICK"));
+            precioUpgradeAutoClick = new BigDecimal(extras.getString("UPGRADE_PRECIO_AUTOCLICK"));
+            precioUpgradeSpeed = new BigDecimal(extras.getString("UPGRADE_PRECIO_SPEED"));
+            nivelUpgradeClick = extras.getInt("UPGRADE_NIVEL_CLICK");
+            nivelUpgradeAutoClick = extras.getInt("UPGRADE_NIVEL_AUTOCLICK");
+            nivelUpgradeSpeed = extras.getInt("UPGRADE_NIVEL_SPEED");
         }
 
         //  Cargo todos los componentes que voy a usar.
@@ -54,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         textValorClick = findViewById(R.id.textValorClick);
         textValorAutoClick = findViewById(R.id.textValorAutoClick);
         textVelocidadAutoClick = findViewById(R.id.textVelocidadAutoClick);
+        moneda = findViewById(R.id.moneda);
 
         // Cargo animaciones y musica
         fade_in.setDuration(100);
@@ -68,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sumar(View v) {
         num = num.add(inc);
+        moneda.startAnimation(fade_in);
         setContText();
     }
 
@@ -151,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void reset(View v) {
-
         AlertDialog.Builder constructor = new AlertDialog.Builder(this);
         constructor.setCancelable(true);
         constructor.setTitle("Reset");
@@ -199,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void salir(){
+    public void salir() {
         Intent i = new Intent(this, PantallaInicio.class);
         startActivity(i);
         finish();
@@ -211,6 +229,13 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("CLICK_VALUE", inc.toString());
         i.putExtra("AUTOCLICK_VALUE", incAuto.toString());
         i.putExtra("AUTOCLICK_TIME", tiempoAutoClick);
+
+        i.putExtra("UPGRADE_PRECIO_CLICK", precioUpgradeClick.toString());
+        i.putExtra("UPGRADE_PRECIO_AUTOCLICK", precioUpgradeAutoClick.toString());
+        i.putExtra("UPGRADE_PRECIO_SPEED", precioUpgradeSpeed.toString());
+        i.putExtra("UPGRADE_NIVEL_CLICK", nivelUpgradeClick);
+        i.putExtra("UPGRADE_NIVEL_AUTOCLICK", nivelUpgradeAutoClick);
+        i.putExtra("UPGRADE_NIVEL_SPEED", nivelUpgradeSpeed);
         startActivity(i);
         finish();
     }

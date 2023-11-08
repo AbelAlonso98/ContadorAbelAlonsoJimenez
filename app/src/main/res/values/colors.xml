@@ -6,4 +6,5 @@
     <color name="orange">#eba434</color>
     <color name="darkPink">#ed09a1</color>
     <color name="darkOrange">#e87b15</color>
+    <color name="transparentOrange">#33eba434</color>
 </resources>
