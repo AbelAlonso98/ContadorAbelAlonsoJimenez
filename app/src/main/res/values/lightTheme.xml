@@ -5,13 +5,10 @@
     </style>
 
     <style name="seekBarTheme" parent="Widget.AppCompat.SeekBar">
-        <item name="android:progressBackgroundTint">@color/darkOrange</item>
+        <item name="android:progressDrawable">@drawable/seekbar_custom_light</item>
+        <item name="android:thumb">@color/orange</item>
         <item name="android:progressTint">@color/orange</item>
-        <item name="thumbTint">@color/darkOrange</item>
-        <item name="android:width">20dp</item>
-        <item name="android:height">20dp</item>
     </style>
-
     <style name="scrollLayout">
         <item name="android:background">@drawable/background_upgrades_light</item>
         <item name="android:textColor">@color/white</item>

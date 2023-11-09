@@ -18,7 +18,7 @@ public class Options extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_options);
-        volumeBar = (SeekBar) findViewById(R.id.volumeBar);
+        volumeBar = findViewById(R.id.volumeBar);
         AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         volumeBar.setMax(maxVolume);

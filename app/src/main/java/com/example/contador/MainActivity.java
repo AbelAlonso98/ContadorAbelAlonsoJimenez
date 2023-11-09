@@ -3,7 +3,9 @@ package com.example.contador;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -27,8 +29,11 @@ public class MainActivity extends AppCompatActivity {
     TextView textVelocidadAutoClick;
     ImageView moneda;
     ScaleAnimation fade_in = new ScaleAnimation(0.7f, 1.2f, 0.7f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+    MediaPlayer mediaPlayer;
+    SoundPool soundPool;
+    int soundId;
 
-    BigDecimal num = new BigDecimal("51100");
+    BigDecimal num = new BigDecimal("3000");
     BigDecimal inc = new BigDecimal("1");
     BigDecimal incAuto = new BigDecimal("1");
 
@@ -39,12 +44,7 @@ public class MainActivity extends AppCompatActivity {
     int nivelUpgradeClick = 1;
     int nivelUpgradeAutoClick = 1;
     int nivelUpgradeSpeed = 1;
-
-
-
     int tiempoAutoClick = 1000;
-
-    MediaPlayer mediaPlayer;
 
 
     @Override
@@ -73,11 +73,14 @@ public class MainActivity extends AppCompatActivity {
         textVelocidadAutoClick = findViewById(R.id.textVelocidadAutoClick);
         moneda = findViewById(R.id.moneda);
 
-        // Cargo animaciones y musica
+        // Cargo animaciones, musica y efectos de sonido
         fade_in.setDuration(100);
         mediaPlayer = MediaPlayer.create(this, R.raw.background_music);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
+        soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+        soundId = soundPool.load(this, R.raw.coin_sound, 1);
+
 
         // Cargo el texto con la funcion que lo formatea e inicio el sumar auto.
         setContText();
@@ -87,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
     public void sumar(View v) {
         num = num.add(inc);
         moneda.startAnimation(fade_in);
+        soundPool.play(soundId, 1, 1, 0, 0, 1);
         setContText();
     }
 
@@ -205,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                 salir();
             }
         });
-        constructor.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+        constructor.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -224,12 +228,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void irACompras(View view) {
+        //mediaPlayer.stop();
         Intent i = new Intent(this, Compras.class);
         i.putExtra("MONEY_COUNT", num.toString());
         i.putExtra("CLICK_VALUE", inc.toString());
         i.putExtra("AUTOCLICK_VALUE", incAuto.toString());
         i.putExtra("AUTOCLICK_TIME", tiempoAutoClick);
-
         i.putExtra("UPGRADE_PRECIO_CLICK", precioUpgradeClick.toString());
         i.putExtra("UPGRADE_PRECIO_AUTOCLICK", precioUpgradeAutoClick.toString());
         i.putExtra("UPGRADE_PRECIO_SPEED", precioUpgradeSpeed.toString());
@@ -243,5 +247,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        mediaPlayer.stop();
+        soundPool.release();
+        soundPool = null;
     }
 }

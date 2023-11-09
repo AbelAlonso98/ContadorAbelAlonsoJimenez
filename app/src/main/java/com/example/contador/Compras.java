@@ -3,6 +3,8 @@ package com.example.contador;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -51,6 +53,9 @@ public class Compras extends AppCompatActivity {
     TextView autoClickUpgradeTitle;
     TextView autoClickSpeedUpgradeTitle;
 
+    SoundPool soundPool;
+    int soundId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +94,9 @@ public class Compras extends AppCompatActivity {
         autoClickUpgradeTitle = findViewById(R.id.tituloMejora2);
         autoClickSpeedUpgradeTitle = findViewById(R.id.tituloMejora3);
         setContText();
+
+        soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+        soundId = soundPool.load(this, R.raw.upgrade_sound, 1);
     }
 
 
@@ -196,22 +204,26 @@ public class Compras extends AppCompatActivity {
             nivelPosibleUpgradeClick--;
             precioUpgradeClick = precioUpgradeClick.multiply(BigDecimal.valueOf(2));
             setContText();
+            soundPool.play(soundId, 1, 1, 0, 0, 1);
         }
     }
 
     public void mejorarClickTotal(View v) {
-        if (nivelUpgradeClick < maxNivelUpgradeClick) {
-            inc = inc.add(new BigDecimal(calcularCuantosNivelesPuedoComprarUpgradeClick()));
+        if (num.compareTo(precioUpgradeClick) >= 0 && nivelUpgradeClick < maxNivelUpgradeClick) {
+            int niveles = calcularCuantosNivelesPuedoComprarUpgradeAutoClick();
+            inc = inc.add(new BigDecimal(niveles));
+            nivelUpgradeClick += niveles;
+            precioUpgradeClick = precioUpgradeClick.multiply(BigDecimal.valueOf(Math.pow(2, niveles))).setScale(0);
             // Se basa en que el precio total por nivel es precioActual*(2^numeroNivelesASubir)
-            num = num.subtract(precioUpgradeClick.multiply(BigDecimal.valueOf(Math.pow(2, calcularCuantosNivelesPuedoComprarUpgradeClick())))).setScale(0);
-            nivelUpgradeClick += calcularCuantosNivelesPuedoComprarUpgradeClick();
+            num = num.subtract(precioUpgradeClick);
             setContText();
+            soundPool.play(soundId, 1, 1, 0, 0, 1);
         }
     }
 
     private int calcularCuantosNivelesPuedoComprarUpgradeClick() {
         BigDecimal precioAux = precioUpgradeClick;
-        for (int i = 1; i <= nivelPosibleUpgradeClick; i++) {
+        for (int i = 0; i < nivelPosibleUpgradeClick; i++) {
             if (precioAux.compareTo(num) > 0)
                 return i;
             precioAux = precioAux.multiply(BigDecimal.valueOf(2));
@@ -230,6 +242,7 @@ public class Compras extends AppCompatActivity {
             nivelPosibleUpgradeAutoClick--;
             precioUpgradeAutoClick = precioUpgradeAutoClick.multiply(BigDecimal.valueOf(2));
             setContText();
+            soundPool.play(soundId, 1, 1, 0, 0, 1);
         }
     }
 
@@ -240,6 +253,7 @@ public class Compras extends AppCompatActivity {
             num = num.subtract(precioUpgradeAutoClick.multiply(BigDecimal.valueOf(Math.pow(2, calcularCuantosNivelesPuedoComprarUpgradeAutoClick())))).setScale(0);
             nivelUpgradeAutoClick += calcularCuantosNivelesPuedoComprarUpgradeAutoClick();
             setContText();
+            soundPool.play(soundId, 1, 1, 0, 0, 1);
         }
     }
 
@@ -261,8 +275,8 @@ public class Compras extends AppCompatActivity {
             tiempoAutoClick = (int) (tiempoAutoClick / 1.25);
             nivelUpgradeSpeed++;
             precioUpgradeSpeed = precioUpgradeSpeed.multiply(BigDecimal.valueOf(3));
-
             setContText();
+            soundPool.play(soundId, 1, 1, 0, 0, 1);
         }
     }
 
@@ -274,6 +288,7 @@ public class Compras extends AppCompatActivity {
             num = num.subtract(precioUpgradeSpeed.multiply(BigDecimal.valueOf(Math.pow(3, calcularCuantosNivelesPuedoComprarUpgradeAutoClickSpeed())))).setScale(0);
             nivelUpgradeSpeed += calcularCuantosNivelesPuedoComprarUpgradeAutoClickSpeed();
             setContText();
+            soundPool.play(soundId, 1, 1, 0, 0, 1);
         }
     }
 

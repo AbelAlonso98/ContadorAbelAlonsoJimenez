@@ -30,13 +30,27 @@
     <SeekBar
         android:id="@+id/volumeBar"
         android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:minHeight="10dp"
+        android:layout_height="wrap_content"
+        android:minHeight="30dp"
         android:maxHeight="50dp"
+        android:progress="30"
+        style="@style/seekBarTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.668" />
+        app:layout_constraintVertical_bias="0.668"
+
+        />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:text="Volumen"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/volumeBar"
+        app:layout_constraintStart_toStartOf="@+id/volumeBar" />
 </androidx.constraintlayout.widget.ConstraintLayout>
