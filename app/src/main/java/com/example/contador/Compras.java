@@ -31,9 +31,9 @@ public class Compras extends AppCompatActivity {
     BigDecimal precioUpgradeClick = new BigDecimal("100");
     BigDecimal precioUpgradeAutoClick = new BigDecimal("200");
     BigDecimal precioUpgradeSpeed = new BigDecimal("400");
-    int nivelUpgradeClick = 1;
-    int nivelUpgradeAutoClick = 1;
-    int nivelUpgradeSpeed = 1;
+    int nivelUpgradeClick = 0;
+    int nivelUpgradeAutoClick = 0;
+    int nivelUpgradeSpeed = 0;
     int nivelPosibleUpgradeClick;
     int nivelPosibleUpgradeAutoClick;
     int nivelPosibleUpgradeSpeed;
@@ -76,9 +76,7 @@ public class Compras extends AppCompatActivity {
             nivelUpgradeSpeed = extras.getInt("UPGRADE_NIVEL_SPEED");
 
         }
-        nivelPosibleUpgradeClick = maxNivelUpgradeClick - nivelUpgradeClick;
-        nivelPosibleUpgradeAutoClick = maxNivelUpgradeAutoClick - nivelUpgradeAutoClick;
-        nivelPosibleUpgradeSpeed = maxNivelUpgradeSpeed - nivelUpgradeSpeed;
+
 
         botonSuma = findViewById(R.id.botonMejora);
         botonSumaAuto = findViewById(R.id.botonSumarAuto);
@@ -117,10 +115,15 @@ public class Compras extends AppCompatActivity {
     }
 
     public void setContText() {
+        int aux;
         // El texto de los botones es dinamico, se cargan aquí
         if (nivelUpgradeClick < maxNivelUpgradeClick) {
-            botonSuma.setText(precioUpgradeClick + "$");
-            botonSumaTotal.setText(precioUpgradeClick + "$ x" + calcularCuantosNivelesPuedoComprarUpgradeClick());
+            aux = calcularCuantosNivelesPuedoComprarUpgradeClick();
+            botonSuma.setText(precioUpgradeClick + "$ " + calcularCuantosNivelesPuedoComprarUpgradeClick());
+            if (aux == 0)
+                botonSumaTotal.setText(precioUpgradeClick + "$ x" + aux);
+            else
+                botonSumaTotal.setText(calcularCuantoCuestaUpgradearClick(aux).toString() + "$ x" + aux);
         } else {
             botonSuma.setText("MAX");
             botonSumaTotal.setText("MAX");
@@ -201,7 +204,7 @@ public class Compras extends AppCompatActivity {
             inc = inc.add(BigDecimal.valueOf(1));
             num = num.subtract(precioUpgradeClick);
             nivelUpgradeClick++;
-            nivelPosibleUpgradeClick--;
+            nivelPosibleUpgradeClick = maxNivelUpgradeClick - nivelUpgradeClick;
             precioUpgradeClick = precioUpgradeClick.multiply(BigDecimal.valueOf(2));
             setContText();
             soundPool.play(soundId, 1, 1, 0, 0, 1);
@@ -212,9 +215,8 @@ public class Compras extends AppCompatActivity {
         if (num.compareTo(precioUpgradeClick) >= 0 && nivelUpgradeClick < maxNivelUpgradeClick) {
             int niveles = calcularCuantosNivelesPuedoComprarUpgradeAutoClick();
             inc = inc.add(new BigDecimal(niveles));
+            precioUpgradeClick = calcularCuantoCuestaUpgradearClick(niveles);
             nivelUpgradeClick += niveles;
-            precioUpgradeClick = precioUpgradeClick.multiply(BigDecimal.valueOf(Math.pow(2, niveles))).setScale(0);
-            // Se basa en que el precio total por nivel es precioActual*(2^numeroNivelesASubir)
             num = num.subtract(precioUpgradeClick);
             setContText();
             soundPool.play(soundId, 1, 1, 0, 0, 1);
@@ -222,14 +224,25 @@ public class Compras extends AppCompatActivity {
     }
 
     private int calcularCuantosNivelesPuedoComprarUpgradeClick() {
+        if (precioUpgradeClick.compareTo(num) > 0)
+            return 0;
+        int aux = 0;
         BigDecimal precioAux = precioUpgradeClick;
-        for (int i = 0; i < nivelPosibleUpgradeClick; i++) {
-            if (precioAux.compareTo(num) > 0)
-                return i;
-            precioAux = precioAux.multiply(BigDecimal.valueOf(2));
-            Log.e("HOLA", precioAux.toString());
+        BigDecimal precioAux2 = precioUpgradeClick;
+        for (int i = nivelUpgradeClick; i <= maxNivelUpgradeClick; i++) {
+            if (precioAux2.compareTo(num) > 0) {
+                aux++;
+                precioAux = precioAux.multiply(BigDecimal.valueOf(2));
+                precioAux2 = precioAux2.add(precioAux);
+            } else {
+                return aux;
+            }
         }
-        return nivelPosibleUpgradeClick;
+        return aux;
+    }
+
+    private BigDecimal calcularCuantoCuestaUpgradearClick(int lvl) {
+        return precioUpgradeClick.multiply(BigDecimal.valueOf(Math.pow(2, lvl - 1))).setScale(0);
     }
 
 
@@ -252,6 +265,7 @@ public class Compras extends AppCompatActivity {
             // Se basa en que el precio total por nivel es precioActual*(2^numeroNivelesASubir)
             num = num.subtract(precioUpgradeAutoClick.multiply(BigDecimal.valueOf(Math.pow(2, calcularCuantosNivelesPuedoComprarUpgradeAutoClick())))).setScale(0);
             nivelUpgradeAutoClick += calcularCuantosNivelesPuedoComprarUpgradeAutoClick();
+            nivelPosibleUpgradeClick = maxNivelUpgradeClick - nivelUpgradeClick;
             setContText();
             soundPool.play(soundId, 1, 1, 0, 0, 1);
         }
