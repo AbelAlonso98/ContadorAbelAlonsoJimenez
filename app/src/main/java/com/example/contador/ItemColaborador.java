@@ -1,11 +1,11 @@
 package com.example.contador;
 
-public class Centro {
+public class ItemColaborador {
     private final String nombre;
     private final String direccion;
     private final int imagen;
 
-    public Centro(String nombre, String direccion, int imagen) {
+    public ItemColaborador(String nombre, String direccion, int imagen) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.imagen = imagen;

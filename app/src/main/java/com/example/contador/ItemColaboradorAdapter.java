@@ -13,16 +13,16 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-public class CentrosAdapter extends ArrayAdapter<Centro> {
+public class ItemColaboradorAdapter extends ArrayAdapter<ItemColaborador> {
 
-    public CentrosAdapter(@NonNull Context context, int resource, @NonNull List<Centro> objects) {
+    public ItemColaboradorAdapter(@NonNull Context context, int resource, @NonNull List<ItemColaborador> objects) {
         super(context, resource, objects);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Centro c = getItem(position);
+        ItemColaborador c = getItem(position);
         if(convertView  == null)
             convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.item, parent, false);
         ((ImageView) convertView.findViewById(R.id.imgEquipo)).setImageResource(c.getImagen());

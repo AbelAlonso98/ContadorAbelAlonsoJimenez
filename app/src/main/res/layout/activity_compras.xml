@@ -50,7 +50,7 @@
     </LinearLayout>
 
 
-        <ScrollView
+    <ScrollView
         android:id="@+id/svMejoras"
         style="@style/scrollLayout"
         android:layout_width="match_parent"
@@ -84,16 +84,17 @@
 
                 <ImageView
                     android:id="@+id/img_upgrade"
+                    style="@style/upgradeClick"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    style="@style/upgradeClick"
                     android:textAlignment="center" />
 
                 <LinearLayout
                     android:id="@+id/sideConjuntoMejora"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:gravity="center">
 
                     <TextView
                         android:id="@+id/tituloMejora"
@@ -109,30 +110,14 @@
                         android:text="Aumenta el valor de los clicks."
                         android:textAlignment="center" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/botonMejora"
-                            style="@style/buttonTheme"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:onClick="mejorarClick"
-                            android:text="100$" />
-
-                        <Button
-                            android:id="@+id/botonMejoraTotal"
-                            style="@style/maxUpgradeButtonTheme"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:onClick="mejorarClickTotal"
-                            android:text="100$ x1" />
-                    </LinearLayout>
+                    <Button
+                        android:id="@+id/botonMejora"
+                        style="@style/buttonTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:onClick="mejorarClick"
+                        android:text="100$" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -151,16 +136,17 @@
 
                 <ImageView
                     android:id="@+id/imagenMejora2"
+                    style="@style/upgradeAutoClick"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    style="@style/upgradeAutoClick"
                     android:textAlignment="center" />
 
                 <LinearLayout
                     android:id="@+id/sideConjuntoMejora2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:gravity="center">
 
                     <TextView
                         android:id="@+id/tituloMejora2"
@@ -176,30 +162,14 @@
                         android:text="Aumenta el click por segundo."
                         android:textAlignment="center" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/botonSumarAuto"
-                            style="@style/buttonTheme"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:onClick="mejorarAutoClick"
-                            android:text="200$" />
-
-                        <Button
-                            android:id="@+id/botonSumarAutoTotal"
-                            style="@style/maxUpgradeButtonTheme"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:onClick="mejorarAutoClickTotal"
-                            android:text="200$ x1" />
-                    </LinearLayout>
+                    <Button
+                        android:id="@+id/botonSumarAuto"
+                        style="@style/buttonTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:onClick="mejorarAutoClick"
+                        android:text="200$" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -218,16 +188,17 @@
 
                 <ImageView
                     android:id="@+id/imagenMejora3"
+                    style="@style/upgradeSpeed"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    style="@style/upgradeSpeed"
                     android:textAlignment="center" />
 
                 <LinearLayout
                     android:id="@+id/sideConjuntoMejora3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:gravity="center">
 
 
                     <TextView
@@ -244,30 +215,14 @@
                         android:text="Reduce el tiempo del click automatico."
                         android:textAlignment="center" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/botonSumarAutoSpeed"
-                            style="@style/buttonTheme"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:onClick="mejorarAutoClickSpeed"
-                            android:text="400$" />
-
-                        <Button
-                            android:id="@+id/botonSumarAutoSpeedTotal"
-                            style="@style/maxUpgradeButtonTheme"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:onClick="mejorarAutoClickSpeedTotal"
-                            android:text="400$ x1" />
-                    </LinearLayout>
+                    <Button
+                        android:id="@+id/botonSumarAutoSpeed"
+                        style="@style/buttonTheme"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:onClick="mejorarAutoClickSpeed"
+                        android:text="400$" />
                 </LinearLayout>
             </LinearLayout>
 

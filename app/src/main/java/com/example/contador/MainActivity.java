@@ -1,6 +1,5 @@
 package com.example.contador;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -22,41 +21,45 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class MainActivity extends AppCompatActivity {
+    // Variables utilizadas para el funcionamiento del juego
+    BigDecimal monedas = new BigDecimal("03475567283746508236458023764508762304");
+    BigDecimal incClick = new BigDecimal("1");
+    BigDecimal incAutoClick = new BigDecimal("1");
+    BigDecimal precioUpgradeClick = new BigDecimal("100");
+    BigDecimal precioUpgradeAutoClick = new BigDecimal("200");
+    BigDecimal precioUpgradeSpeed = new BigDecimal("400");
+    int nivelUpgradeClick = 1;
+    int nivelUpgradeAutoClick = 1;
+    int nivelUpgradeSpeed = 1;
+    int tiempoAutoClick = 1000; // Milisegundos
 
+    // Variables utilizadas para instanciar los componentes
     TextView contador;
     TextView textValorClick;
     TextView textValorAutoClick;
     TextView textVelocidadAutoClick;
     ImageView moneda;
+
+    // Variables utilizadas para efectos de sonido y animaciones
     ScaleAnimation fade_in = new ScaleAnimation(0.7f, 1.2f, 0.7f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
     MediaPlayer mediaPlayer;
     SoundPool soundPool;
     int soundId;
-
-    BigDecimal num = new BigDecimal("3000");
-    BigDecimal inc = new BigDecimal("1");
-    BigDecimal incAuto = new BigDecimal("1");
-
-    BigDecimal precioUpgradeClick = new BigDecimal("100");
-    BigDecimal precioUpgradeAutoClick = new BigDecimal("200");
-    BigDecimal precioUpgradeSpeed = new BigDecimal("400");
-
-    int nivelUpgradeClick = 1;
-    int nivelUpgradeAutoClick = 1;
-    int nivelUpgradeSpeed = 1;
-    int tiempoAutoClick = 1000;
+    boolean musicEnabled;
+    boolean soundEffectsEnabled;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Bundle extras = getIntent().getExtras();
 
+        // Cargo los datos (en caso de que los haya) que hayan pasado otras activities.
+        Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            num = new BigDecimal(extras.getString("MONEY_COUNT", "0"));
-            inc = new BigDecimal(extras.getString("CLICK_VALUE", "0"));
-            incAuto = new BigDecimal(extras.getString("AUTOCLICK_VALUE", "0"));
+            monedas = new BigDecimal(extras.getString("MONEY_COUNT", "0"));
+            incClick = new BigDecimal(extras.getString("CLICK_VALUE", "0"));
+            incAutoClick = new BigDecimal(extras.getString("AUTOCLICK_VALUE", "0"));
             tiempoAutoClick = extras.getInt("AUTOCLICK_TIME");
             precioUpgradeClick = new BigDecimal(extras.getString("UPGRADE_PRECIO_CLICK"));
             precioUpgradeAutoClick = new BigDecimal(extras.getString("UPGRADE_PRECIO_AUTOCLICK"));
@@ -87,17 +90,25 @@ public class MainActivity extends AppCompatActivity {
         sumarAuto();
     }
 
+    /**
+     * Metodo que suma el incClick a las monedas. Se activa desde la moneda central.
+     *
+     * @param v (Obligatorio al haberse asignado en un OnClick)
+     */
     public void sumar(View v) {
-        num = num.add(inc);
+        monedas = monedas.add(incClick);
         moneda.startAnimation(fade_in);
         soundPool.play(soundId, 1, 1, 0, 0, 1);
         setContText();
     }
 
+    /**
+     * Metodo que se encarga de crear el hilo para el ClickAuto.
+     */
     public void sumarAuto() {
         new Thread(() -> {
             while (true) {
-                num = num.add(incAuto);
+                monedas = monedas.add(incAutoClick);
                 runOnUiThread(this::setContText);
                 try {
                     Thread.sleep(tiempoAutoClick);
@@ -109,11 +120,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Metodo que se encarga de mostrar datos por pantalla, se llama a él cada vez que se incrementa el contador.
+     */
     public void setContText() {
 
-        // Esta opcion con un mapa, la veo más bonita y estable.
+        // Cargo un mapa que contiene el divisor para asignar la letra que tiene como key.
         HashMap<String, BigDecimal> VALORES = new LinkedHashMap<>();
-
         VALORES.put("K", new BigDecimal("1000"));
         VALORES.put("M", new BigDecimal("1000000"));
         VALORES.put("B", new BigDecimal("1000000000"));
@@ -136,43 +149,25 @@ public class MainActivity extends AppCompatActivity {
         VALORES.put("ND", new BigDecimal("1000000000000000000000000000000000000000000000000000000000000"));
         VALORES.put("V", new BigDecimal("10000000000000000000000000000000000000000000000000000000000000000"));
 
-        if (num.compareTo(VALORES.get("K")) < 0)
-            contador.setText(num.toString());
+        if (monedas.compareTo(VALORES.get("K")) < 0)
+            contador.setText(monedas.toString());
         else {
             for (String s : VALORES.keySet()) {
-                if (num.compareTo(VALORES.get(s)) >= 0)
-                    contador.setText(num.divide(VALORES.get(s)).setScale(2, RoundingMode.HALF_EVEN).toString() + s);
+                if (monedas.compareTo(VALORES.get(s)) >= 0)
+                    contador.setText(monedas.divide(VALORES.get(s)).setScale(2, RoundingMode.HALF_EVEN).toString() + s);
             }
         }
-
-        // Esta opcion con dos arrays, el inconveniente es que ambos han de tener las mismas dimensiones.
-//        for(String s: VALORES.keySet()){
-//            if(num.compareTo(VALORES.get(s)) >= 0)
-//                contador.setText(num.divide(VALORES.get(s)).setScale(2, RoundingMode.HALF_EVEN).toString() + s);
-//
-//        }
-//        String[] SIGLAS = {"K", "M", "G", "T", "P", "E", "Z", "Y", "R", "Q", "D"};
-//        BigDecimal[] NUMBERS = {
-//                new BigDecimal("1000000"),
-//                new BigDecimal("1000000000"),
-//                new BigDecimal("1000000000000"),
-//                new BigDecimal("1000000000000000"),
-//                new BigDecimal("1000000000000000000"),
-//                new BigDecimal("1000000000000000000000"),
-//                new BigDecimal("1000000000000000000000000"),
-//                new BigDecimal("1000000000000000000000000000"),
-//                new BigDecimal("1000000000000000000000000000000"),
-//                new BigDecimal("1000000000000000000000000000000000")};
-//        for (int i = 0; i < NUMBERS.length; i++) {
-//            BigDecimal n = NUMBERS[i];
-//            if (num.compareTo(n) >= 0)
-//                contador.setText(num.divide(n).setScale(2, RoundingMode.HALF_EVEN).toString() + SIGLAS[i]);
-//        }
-        textValorClick.setText("Click: " + inc.toString());
-        textValorAutoClick.setText("Autoclick: " + incAuto.toString());
+        textValorClick.setText("Click: " + incClick.toString());
+        textValorAutoClick.setText("Autoclick: " + incAutoClick.toString());
         textVelocidadAutoClick.setText("Autoclick speed: " + tiempoAutoClick + "m" + "s");
     }
 
+
+    /**
+     * Metodo que resetea el contador, está asignado en el OnClick del contador y pide confirmacion a traves de un Dialog.
+     *
+     * @param v (Obligatorio al haberse asignado en un OnClick)
+     */
     public void reset(View v) {
         AlertDialog.Builder constructor = new AlertDialog.Builder(this);
         constructor.setCancelable(true);
@@ -181,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         constructor.setPositiveButton("RESET", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                num = new BigDecimal("0");
+                monedas = new BigDecimal("0");
                 setContText();
             }
         });
@@ -197,6 +192,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Método que devuelve a la pantalla de inicio, pide confirmación a través de un Dialog. Se llama a través del icono de back de la esquina superior derecha.
+     *
+     * @param view (Obligatorio al haberse asignado en un OnClick)
+     */
     public void irAPantallaInicio(View view) {
 
         AlertDialog.Builder constructor = new AlertDialog.Builder(this);
@@ -221,18 +221,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo que crea el activity de PantallaInicio, lo lanza y cierra la actual. Lo uso como auxiliar puesto que no tengo acceso a ello al redefinir el OnClick del boton del dialog.
+     */
     public void salir() {
         Intent i = new Intent(this, PantallaInicio.class);
         startActivity(i);
         finish();
     }
 
+    /**
+     * Metodo que crea y abre el activity de Compras, cerrando el actual y pasandole datos que se usarán en ella. Se activara al clickar en el carrito.
+     *
+     * @param view (Obligatorio al haberse asignado en un OnClick)
+     */
     public void irACompras(View view) {
-        //mediaPlayer.stop();
         Intent i = new Intent(this, Compras.class);
-        i.putExtra("MONEY_COUNT", num.toString());
-        i.putExtra("CLICK_VALUE", inc.toString());
-        i.putExtra("AUTOCLICK_VALUE", incAuto.toString());
+        i.putExtra("MONEY_COUNT", monedas.toString());
+        i.putExtra("CLICK_VALUE", incClick.toString());
+        i.putExtra("AUTOCLICK_VALUE", incAutoClick.toString());
         i.putExtra("AUTOCLICK_TIME", tiempoAutoClick);
         i.putExtra("UPGRADE_PRECIO_CLICK", precioUpgradeClick.toString());
         i.putExtra("UPGRADE_PRECIO_AUTOCLICK", precioUpgradeAutoClick.toString());
@@ -244,6 +251,9 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Método redefinido para parar la música al salir de la partida y liberar los recursos que usa el SoundPool.
+     */
     @Override
     protected void onStop() {
         super.onStop();

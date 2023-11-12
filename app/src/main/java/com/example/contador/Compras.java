@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,9 +20,9 @@ import java.util.LinkedHashMap;
  */
 public class Compras extends AppCompatActivity {
     // Variables utilizadas para el funcionamiento del juego
-    BigDecimal num;
-    BigDecimal inc;
-    BigDecimal incAuto;
+    BigDecimal monedas;
+    BigDecimal incClick;
+    BigDecimal incAutoClick;
     int tiempoAutoClick;
     private final int maxNivelUpgradeClick = 10;
     private final int maxNivelUpgradeAutoClick = 5;
@@ -34,17 +33,11 @@ public class Compras extends AppCompatActivity {
     int nivelUpgradeClick = 0;
     int nivelUpgradeAutoClick = 0;
     int nivelUpgradeSpeed = 0;
-    int nivelPosibleUpgradeClick;
-    int nivelPosibleUpgradeAutoClick;
-    int nivelPosibleUpgradeSpeed;
 
     // Variables utilizadas para instanciar los componentes
     Button botonSuma;
     Button botonSumaAuto;
     Button botonAutoSpeed;
-    Button botonSumaTotal;
-    Button botonSumarAutoTotal;
-    Button botonSumarAutoSpeedTotal;
     TextView textValorClick;
     TextView textValorAutoClick;
     TextView textVelocidadAutoClick;
@@ -53,6 +46,7 @@ public class Compras extends AppCompatActivity {
     TextView autoClickUpgradeTitle;
     TextView autoClickSpeedUpgradeTitle;
 
+    // Variables utilizadas para efectos de sonido
     SoundPool soundPool;
     int soundId;
 
@@ -63,27 +57,20 @@ public class Compras extends AppCompatActivity {
         setContentView(R.layout.activity_compras);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            num = new BigDecimal(extras.getString("MONEY_COUNT"));
-            inc = new BigDecimal(extras.getString("CLICK_VALUE"));
-            incAuto = new BigDecimal(extras.getString("AUTOCLICK_VALUE"));
+            monedas = new BigDecimal(extras.getString("MONEY_COUNT"));
+            incClick = new BigDecimal(extras.getString("CLICK_VALUE"));
+            incAutoClick = new BigDecimal(extras.getString("AUTOCLICK_VALUE"));
             tiempoAutoClick = extras.getInt("AUTOCLICK_TIME");
-
             precioUpgradeClick = new BigDecimal(extras.getString("UPGRADE_PRECIO_CLICK"));
             precioUpgradeAutoClick = new BigDecimal(extras.getString("UPGRADE_PRECIO_AUTOCLICK"));
             precioUpgradeSpeed = new BigDecimal(extras.getString("UPGRADE_PRECIO_SPEED"));
             nivelUpgradeClick = extras.getInt("UPGRADE_NIVEL_CLICK");
             nivelUpgradeAutoClick = extras.getInt("UPGRADE_NIVEL_AUTOCLICK");
             nivelUpgradeSpeed = extras.getInt("UPGRADE_NIVEL_SPEED");
-
         }
-
-
         botonSuma = findViewById(R.id.botonMejora);
         botonSumaAuto = findViewById(R.id.botonSumarAuto);
         botonAutoSpeed = findViewById(R.id.botonSumarAutoSpeed);
-        botonSumaTotal = (Button) findViewById(R.id.botonMejoraTotal);
-        botonSumarAutoTotal = (Button) findViewById(R.id.botonSumarAutoTotal);
-        botonSumarAutoSpeedTotal = (Button) findViewById(R.id.botonSumarAutoSpeedTotal);
         textValorClick = (TextView) findViewById(R.id.textValorClick);
         textValorAutoClick = (TextView) findViewById(R.id.textValorAutoClick);
         textVelocidadAutoClick = (TextView) findViewById(R.id.textVelocidadAutoClick);
@@ -98,11 +85,16 @@ public class Compras extends AppCompatActivity {
     }
 
 
+    /**
+     * Metodo que te devuelve a la partida (MainActivity) pasando los datos necesarios.
+     *
+     * @param v (Obligatorio al haberse asignado en un OnClick)
+     */
     public void volverAJugar(View v) {
         Intent i = new Intent(this, MainActivity.class);
-        i.putExtra("MONEY_COUNT", num.toString());
-        i.putExtra("CLICK_VALUE", inc.toString());
-        i.putExtra("AUTOCLICK_VALUE", incAuto.toString());
+        i.putExtra("MONEY_COUNT", monedas.toString());
+        i.putExtra("CLICK_VALUE", incClick.toString());
+        i.putExtra("AUTOCLICK_VALUE", incAutoClick.toString());
         i.putExtra("AUTOCLICK_TIME", tiempoAutoClick);
         i.putExtra("UPGRADE_PRECIO_CLICK", precioUpgradeClick.toString());
         i.putExtra("UPGRADE_PRECIO_AUTOCLICK", precioUpgradeAutoClick.toString());
@@ -114,45 +106,33 @@ public class Compras extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Metodo que se encarga de mostrar datos por pantalla, se llama a él cada vez que se incrementa el contador.
+     */
     public void setContText() {
         int aux;
         // El texto de los botones es dinamico, se cargan aquí
         if (nivelUpgradeClick < maxNivelUpgradeClick) {
-            aux = calcularCuantosNivelesPuedoComprarUpgradeClick();
-            botonSuma.setText(precioUpgradeClick + "$ " + calcularCuantosNivelesPuedoComprarUpgradeClick());
-            if (aux == 0)
-                botonSumaTotal.setText(precioUpgradeClick + "$ x" + aux);
-            else
-                botonSumaTotal.setText(calcularCuantoCuestaUpgradearClick(aux).toString() + "$ x" + aux);
+            botonSuma.setText(precioUpgradeClick + "$ ");
         } else {
             botonSuma.setText("MAX");
-            botonSumaTotal.setText("MAX");
             botonSuma.setEnabled(false);
-            botonSumaTotal.setEnabled(false);
             botonSuma.setAlpha(0.65f);
-            botonSumaTotal.setAlpha(0.65f);
         }
         if (nivelUpgradeAutoClick < maxNivelUpgradeAutoClick) {
             botonSumaAuto.setText(precioUpgradeAutoClick + "$");
-            botonSumarAutoTotal.setText(precioUpgradeAutoClick + "$ x" + calcularCuantosNivelesPuedoComprarUpgradeAutoClick());
         } else {
             botonSumaAuto.setText("MAX");
-            botonSumarAutoTotal.setText("MAX");
             botonSumaAuto.setEnabled(false);
-            botonSumarAutoTotal.setEnabled(false);
             botonSumaAuto.setAlpha(0.65f);
-            botonSumarAutoTotal.setAlpha(0.65f);
         }
         if (nivelUpgradeSpeed < maxNivelUpgradeSpeed) {
             botonAutoSpeed.setText(precioUpgradeSpeed + "$");
-            botonSumarAutoSpeedTotal.setText(precioUpgradeSpeed + "$ x" + calcularCuantosNivelesPuedoComprarUpgradeAutoClickSpeed());
         } else {
             botonAutoSpeed.setText("MAX");
-            botonSumarAutoSpeedTotal.setText("MAX");
             botonAutoSpeed.setEnabled(false);
-            botonSumarAutoSpeedTotal.setEnabled(false);
             botonAutoSpeed.setAlpha(0.65f);
-            botonSumarAutoSpeedTotal.setAlpha(0.65f);
+
         }
         // Cargo los indicadores de niveles
         clickUpgradeTitle.setText("Valor del click (" + nivelUpgradeClick + "/" + maxNivelUpgradeClick + ")");
@@ -160,8 +140,8 @@ public class Compras extends AppCompatActivity {
         autoClickSpeedUpgradeTitle.setText("AutoClick speed (" + nivelUpgradeSpeed + "/" + maxNivelUpgradeSpeed + ")");
 
         // Cargo los datos de la barra superior
-        textValorClick.setText("Click: " + inc.toString());
-        textValorAutoClick.setText("Autoclick: " + incAuto.toString());
+        textValorClick.setText("Click: " + incClick.toString());
+        textValorAutoClick.setText("Autoclick: " + incAutoClick.toString());
         textVelocidadAutoClick.setText("Autoclick speed: " + tiempoAutoClick + "m" + "s");
 
         // Formateo el contador.
@@ -188,132 +168,62 @@ public class Compras extends AppCompatActivity {
         VALORES.put("ND", new BigDecimal("1000000000000000000000000000000000000000000000000000000000000"));
         VALORES.put("V", new BigDecimal("10000000000000000000000000000000000000000000000000000000000000000"));
 
-        if (num.compareTo(VALORES.get("K")) < 0)
-            textMoneyCount.setText(num.toString());
+        if (monedas.compareTo(VALORES.get("K")) < 0)
+            textMoneyCount.setText(monedas.toString());
         else {
             for (String s : VALORES.keySet()) {
-                if (num.compareTo(VALORES.get(s)) >= 0)
-                    textMoneyCount.setText(num.divide(VALORES.get(s)).setScale(2, RoundingMode.HALF_EVEN).toString() + s);
+                if (monedas.compareTo(VALORES.get(s)) >= 0)
+                    textMoneyCount.setText(monedas.divide(VALORES.get(s)).setScale(2, RoundingMode.HALF_EVEN).toString() + s);
             }
         }
     }
 
-    // Metodos para botones de la primera mejora (Click value)
+    /**
+     * Metodo que aumenta en uno el incremento del click.
+     *
+     * @param v (Obligatorio al haberse asignado en un OnClick)
+     */
     public void mejorarClick(View v) {
-        if (num.compareTo(precioUpgradeClick) >= 0 && nivelUpgradeClick < maxNivelUpgradeClick) {
-            inc = inc.add(BigDecimal.valueOf(1));
-            num = num.subtract(precioUpgradeClick);
+        if (monedas.compareTo(precioUpgradeClick) >= 0 && nivelUpgradeClick < maxNivelUpgradeClick) {
+            incClick = incClick.add(BigDecimal.valueOf(1));
+            monedas = monedas.subtract(precioUpgradeClick);
             nivelUpgradeClick++;
-            nivelPosibleUpgradeClick = maxNivelUpgradeClick - nivelUpgradeClick;
             precioUpgradeClick = precioUpgradeClick.multiply(BigDecimal.valueOf(2));
             setContText();
             soundPool.play(soundId, 1, 1, 0, 0, 1);
         }
     }
 
-    public void mejorarClickTotal(View v) {
-        if (num.compareTo(precioUpgradeClick) >= 0 && nivelUpgradeClick < maxNivelUpgradeClick) {
-            int niveles = calcularCuantosNivelesPuedoComprarUpgradeAutoClick();
-            inc = inc.add(new BigDecimal(niveles));
-            precioUpgradeClick = calcularCuantoCuestaUpgradearClick(niveles);
-            nivelUpgradeClick += niveles;
-            num = num.subtract(precioUpgradeClick);
-            setContText();
-            soundPool.play(soundId, 1, 1, 0, 0, 1);
-        }
-    }
-
-    private int calcularCuantosNivelesPuedoComprarUpgradeClick() {
-        if (precioUpgradeClick.compareTo(num) > 0)
-            return 0;
-        int aux = 0;
-        BigDecimal precioAux = precioUpgradeClick;
-        BigDecimal precioAux2 = precioUpgradeClick;
-        for (int i = nivelUpgradeClick; i <= maxNivelUpgradeClick; i++) {
-            if (precioAux2.compareTo(num) > 0) {
-                aux++;
-                precioAux = precioAux.multiply(BigDecimal.valueOf(2));
-                precioAux2 = precioAux2.add(precioAux);
-            } else {
-                return aux;
-            }
-        }
-        return aux;
-    }
-
-    private BigDecimal calcularCuantoCuestaUpgradearClick(int lvl) {
-        return precioUpgradeClick.multiply(BigDecimal.valueOf(Math.pow(2, lvl - 1))).setScale(0);
-    }
-
-
-    // Metodos para botones de la segunda mejora (AutoClick value)
+    /**
+     * Metodo que aumenta en uno el incremento del AutoClick.
+     *
+     * @param v (Obligatorio al haberse asignado en un OnClick)
+     */
     public void mejorarAutoClick(View v) {
-        if (num.compareTo(precioUpgradeAutoClick) >= 0 && nivelUpgradeAutoClick < maxNivelUpgradeAutoClick) {
-            incAuto = incAuto.add(BigDecimal.valueOf(1));
-            num = num.subtract(precioUpgradeAutoClick);
+        if (monedas.compareTo(precioUpgradeAutoClick) >= 0 && nivelUpgradeAutoClick < maxNivelUpgradeAutoClick) {
+            incAutoClick = incAutoClick.add(BigDecimal.valueOf(1));
+            monedas = monedas.subtract(precioUpgradeAutoClick);
             nivelUpgradeAutoClick++;
-            nivelPosibleUpgradeAutoClick--;
             precioUpgradeAutoClick = precioUpgradeAutoClick.multiply(BigDecimal.valueOf(2));
             setContText();
             soundPool.play(soundId, 1, 1, 0, 0, 1);
         }
     }
 
-    public void mejorarAutoClickTotal(View v) {
-        if (nivelUpgradeAutoClick < maxNivelUpgradeAutoClick) {
-            incAuto = incAuto.add(new BigDecimal(calcularCuantosNivelesPuedoComprarUpgradeAutoClick()));
-            // Se basa en que el precio total por nivel es precioActual*(2^numeroNivelesASubir)
-            num = num.subtract(precioUpgradeAutoClick.multiply(BigDecimal.valueOf(Math.pow(2, calcularCuantosNivelesPuedoComprarUpgradeAutoClick())))).setScale(0);
-            nivelUpgradeAutoClick += calcularCuantosNivelesPuedoComprarUpgradeAutoClick();
-            nivelPosibleUpgradeClick = maxNivelUpgradeClick - nivelUpgradeClick;
-            setContText();
-            soundPool.play(soundId, 1, 1, 0, 0, 1);
-        }
-    }
-
-    private int calcularCuantosNivelesPuedoComprarUpgradeAutoClick() {
-        BigDecimal precioAux = precioUpgradeAutoClick;
-        for (int i = 0; i < nivelPosibleUpgradeAutoClick; i++) {
-            if (precioAux.compareTo(num) > 0)
-                return i;
-            precioAux = precioAux.multiply(BigDecimal.valueOf(2));
-        }
-        return nivelPosibleUpgradeAutoClick;
-    }
-
-    // Metodos para botones de la tercera mejora (AutoClick speed)
-
+    /**
+     * Metodo que aumenta la velocidad del AutoClick.
+     *
+     * @param v (Obligatorio al haberse asignado en un OnClick)
+     */
     public void mejorarAutoClickSpeed(View v) {
-        if (num.compareTo(precioUpgradeSpeed) >= 0 && nivelUpgradeSpeed < maxNivelUpgradeSpeed) {
-            num = num.subtract(precioUpgradeSpeed);
+        if (monedas.compareTo(precioUpgradeSpeed) >= 0 && nivelUpgradeSpeed < maxNivelUpgradeSpeed) {
+            monedas = monedas.subtract(precioUpgradeSpeed);
             tiempoAutoClick = (int) (tiempoAutoClick / 1.25);
             nivelUpgradeSpeed++;
             precioUpgradeSpeed = precioUpgradeSpeed.multiply(BigDecimal.valueOf(3));
             setContText();
             soundPool.play(soundId, 1, 1, 0, 0, 1);
         }
-    }
-
-    public void mejorarAutoClickSpeedTotal(View v) {
-        if (num.compareTo(precioUpgradeSpeed) >= 0 && nivelUpgradeSpeed < maxNivelUpgradeSpeed) {
-            int times = calcularCuantosNivelesPuedoComprarUpgradeAutoClickSpeed();
-            tiempoAutoClick = (int) (tiempoAutoClick / (1.5 * times));
-            // Se basa en que el precio total por nivel es precioActual*(3^numeroNivelesASubir)
-            num = num.subtract(precioUpgradeSpeed.multiply(BigDecimal.valueOf(Math.pow(3, calcularCuantosNivelesPuedoComprarUpgradeAutoClickSpeed())))).setScale(0);
-            nivelUpgradeSpeed += calcularCuantosNivelesPuedoComprarUpgradeAutoClickSpeed();
-            setContText();
-            soundPool.play(soundId, 1, 1, 0, 0, 1);
-        }
-    }
-
-    private int calcularCuantosNivelesPuedoComprarUpgradeAutoClickSpeed() {
-        BigDecimal precioAux = precioUpgradeSpeed;
-        for (int i = 0; i < nivelPosibleUpgradeSpeed; i++) {
-            if (precioAux.compareTo(num) > 0)
-                return i;
-            precioAux = precioAux.multiply(BigDecimal.valueOf(3));
-        }
-        return nivelPosibleUpgradeSpeed;
     }
 
 
