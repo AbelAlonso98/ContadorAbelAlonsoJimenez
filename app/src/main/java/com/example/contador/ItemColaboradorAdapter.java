@@ -24,7 +24,7 @@ public class ItemColaboradorAdapter extends ArrayAdapter<ItemColaborador> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         ItemColaborador c = getItem(position);
         if(convertView  == null)
-            convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.item, parent, false);
+            convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.item_colaborador, parent, false);
         ((ImageView) convertView.findViewById(R.id.imgEquipo)).setImageResource(c.getImagen());
         ((TextView) convertView.findViewById(R.id.txtNombreEquipo)).setText(c.getNombre());
         ((TextView) convertView.findViewById(R.id.txtCargoEquipo)).setText(c.getDireccion());

@@ -25,7 +25,7 @@ public class Info extends AppCompatActivity implements AdapterView.OnItemClickLi
                 new ItemColaborador("Pablo Eguilaz Pérez ", "Tester principal", R.drawable.img_pablo),
                 new ItemColaborador("Carlos Manso González", "Team leader", R.drawable.img_carlos)
         );
-        ItemColaboradorAdapter adapter = new ItemColaboradorAdapter(this, R.layout.item, itemColaboradors);
+        ItemColaboradorAdapter adapter = new ItemColaboradorAdapter(this, R.layout.item_colaborador, itemColaboradors);
         ListView dataList = findViewById(R.id.dataList);
         dataList.setAdapter(adapter);
         dataList.setOnItemClickListener(this);
