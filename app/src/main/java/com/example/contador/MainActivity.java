@@ -22,7 +22,7 @@ import java.util.LinkedHashMap;
 
 public class MainActivity extends AppCompatActivity {
     // Variables utilizadas para el funcionamiento del juego
-    BigDecimal monedas = new BigDecimal("03475567283746508236458023764508762304");
+    BigDecimal monedas = new BigDecimal("0");
     BigDecimal incClick = new BigDecimal("1");
     BigDecimal incAutoClick = new BigDecimal("1");
     BigDecimal precioUpgradeClick = new BigDecimal("100");
